@@ -12,7 +12,7 @@ class App extends Component {
       super(props);
       this.max_content_id = 3;
       this.state ={
-        mode : "create",
+        mode : "welcome",
         select_content_id : 1,
         subject:{
           title: "CRUD",
@@ -34,13 +34,26 @@ class App extends Component {
   }
   getReadContent(){
     var i=0;
+    var data = Array.from(this.state.contents);
     while(i<this.state.contents.length){
-      var data = this.state.contents[i];
-      if(data.id === this.state.select_content_id){
-        return data;
+      if(data[i].id === this.state.select_content_id){
+        return data[i];
       }
       i++;
     }
+  }
+  getDeleteContent(){
+    var i=0;
+    var _contents = Array.from(this.state.contents);
+    while(i<this.state.contents.length){
+      if(_contents[i].id === this.state.select_content_id){
+        _contents.splice(i,1);
+         break;
+      }
+      i++;
+    }
+    this.setState({contents:_contents, mode:'welcome'});
+
   }
   getContent(){
     var _title, _desc,_article,_content = null;
@@ -57,11 +70,12 @@ class App extends Component {
     {
       _article = <CreateContent onSubmit={(_title,_desc)=>{
         this.max_content_id++;
+        debugger;
         var _contents = Array.from(this.state.contents);
         _contents.push({ id:this.max_content_id,
           title:_title,
           desc:_desc});
-          this.setState({contents:_contents, mode:'read',select_content_id:this.max_content_id});
+          this.setState({contents:_contents, mode:'welcome'});
       }}  
      />;   
     }
@@ -84,6 +98,14 @@ class App extends Component {
       }}  
      />;   
     }
+    else if(this.state.mode ==='delete')
+    {
+      if(window.confirm('really?')){
+        this.getDeleteContent();
+        this.max_content_id--;
+      }
+    }
+
     return _article;
   }
   render(){
