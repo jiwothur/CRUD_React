@@ -4,7 +4,7 @@ class CreateContent extends Component{
     render(){
       return(
        <article>
-         <h2>create</h2>
+         <h2>Create</h2>
           <form action="/create_process" method="post"
           onSubmit = {(e)=>{
             e.preventDefault();
